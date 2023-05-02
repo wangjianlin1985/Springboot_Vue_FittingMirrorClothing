@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.design.mirror.mapper.ClothesMapper" >
+  <resultMap id="BaseResultMap" type="com.design.mirror.entity.Clothes" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="video" property="video" jdbcType="VARCHAR" />
+    <result column="min_height" property="minHeight" jdbcType="REAL" />
+    <result column="max_height" property="maxHeight" jdbcType="REAL" />
+    <result column="min_weight" property="minWeight" jdbcType="REAL" />
+    <result column="max_weight" property="maxWeight" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, description, type, picture, video, min_height, max_height, min_weight, 
+    max_weight
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from clothes
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByName" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+      clothes
+    <if test="name != null" >
+    WHERE
+        name LIKE "%${name}%"
+    </if>
+  </select>
+  
+  <select id="selectByHeightAndWeight" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+      clothes
+    WHERE
+        min_height &lt; ${height} and max_height &gt; ${height}
+    AND
+        min_weight &lt; ${weight} and max_weight &gt; ${weight}
+    AND
+        type = #{type}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from clothes
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.design.mirror.entity.Clothes" >
+    insert into clothes (id, name, description, 
+      type, picture, video, 
+      min_height, max_height, min_weight, 
+      max_weight)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{video,jdbcType=VARCHAR}, 
+      #{minHeight,jdbcType=REAL}, #{maxHeight,jdbcType=REAL}, #{minWeight,jdbcType=REAL}, 
+      #{maxWeight,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.design.mirror.entity.Clothes" >
+    insert into clothes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="video != null" >
+        video,
+      </if>
+      <if test="minHeight != null" >
+        min_height,
+      </if>
+      <if test="maxHeight != null" >
+        max_height,
+      </if>
+      <if test="minWeight != null" >
+        min_weight,
+      </if>
+      <if test="maxWeight != null" >
+        max_weight,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null" >
+        #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="minHeight != null" >
+        #{minHeight,jdbcType=REAL},
+      </if>
+      <if test="maxHeight != null" >
+        #{maxHeight,jdbcType=REAL},
+      </if>
+      <if test="minWeight != null" >
+        #{minWeight,jdbcType=REAL},
+      </if>
+      <if test="maxWeight != null" >
+        #{maxWeight,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.design.mirror.entity.Clothes" >
+    update clothes
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null" >
+        video = #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="minHeight != null" >
+        min_height = #{minHeight,jdbcType=REAL},
+      </if>
+      <if test="maxHeight != null" >
+        max_height = #{maxHeight,jdbcType=REAL},
+      </if>
+      <if test="minWeight != null" >
+        min_weight = #{minWeight,jdbcType=REAL},
+      </if>
+      <if test="maxWeight != null" >
+        max_weight = #{maxWeight,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.design.mirror.entity.Clothes" >
+    update clothes
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
+      video = #{video,jdbcType=VARCHAR},
+      min_height = #{minHeight,jdbcType=REAL},
+      max_height = #{maxHeight,jdbcType=REAL},
+      min_weight = #{minWeight,jdbcType=REAL},
+      max_weight = #{maxWeight,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
